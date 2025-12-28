@@ -3,10 +3,10 @@
 #![no_main]
 #![cfg_attr(test, no_main)]
 
-mod hardware;
-mod display;
 mod app;
+mod display;
 mod double_tap_reboot;
+mod hardware;
 
 use defmt_rtt as _;
 use panic_probe as _;
@@ -26,7 +26,9 @@ static mut HEAP: [MaybeUninit<u8>; HEAP_SIZE] = [MaybeUninit::uninit(); HEAP_SIZ
 #[rp_pico::entry]
 fn main() -> ! {
     // Initialize the allocator before any heap usage
-    unsafe { ALLOCATOR.init(HEAP.as_mut_ptr() as usize, HEAP_SIZE); }
+    unsafe {
+        ALLOCATOR.init(HEAP.as_mut_ptr() as usize, HEAP_SIZE);
+    }
 
     // Инициализация аппаратной части
     let (hw, mut pac_periph, timer_periph) = hardware::init();

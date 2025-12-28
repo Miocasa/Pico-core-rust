@@ -1,3 +1,4 @@
+use crate::hardware::{Hardware, RemainingPeripherals};
 use core::cell::RefCell;
 use cortex_m::interrupt::Mutex;
 use embedded_graphics::{
@@ -6,17 +7,11 @@ use embedded_graphics::{
     prelude::*,
     text::Text,
 };
-use rp_pico::hal::{
-    gpio::Pins,
-    i2c::I2C,
-    pac,
-    Clock,
-};
 use rp_pico::hal::fugit::RateExtU32;
+use rp_pico::hal::{gpio::Pins, i2c::I2C, pac, Clock};
 use rp_pico::pac::RESETS;
-use ssd1306::{prelude::*, I2CDisplayInterface, Ssd1306};
 use ssd1306::mode::BufferedGraphicsMode;
-use crate::hardware::{Hardware, RemainingPeripherals};
+use ssd1306::{prelude::*, I2CDisplayInterface, Ssd1306};
 
 type I2cType = I2C<
     pac::I2C1,
@@ -34,11 +29,8 @@ type I2cType = I2C<
     ),
 >;
 
-type DisplayType = Ssd1306<
-    I2CInterface<SharedI2c>,
-    DisplaySize128x64,
-    BufferedGraphicsMode<DisplaySize128x64>,
->;
+type DisplayType =
+    Ssd1306<I2CInterface<SharedI2c>, DisplaySize128x64, BufferedGraphicsMode<DisplaySize128x64>>;
 
 static I2C_BUS: Mutex<RefCell<Option<I2cType>>> = Mutex::new(RefCell::new(None));
 
@@ -97,11 +89,7 @@ pub fn init_displays(periph: RemainingPeripherals, hw: &Hardware) -> Displays {
 
     // Первый дисплей (адрес 0x3D)
     let interface1 = I2CDisplayInterface::new_custom_address(SharedI2c, 0x3D);
-    let mut display1 = Ssd1306::new(
-        interface1,
-        DisplaySize128x64,
-        DisplayRotation::Rotate0,
-    )
+    let mut display1 = Ssd1306::new(interface1, DisplaySize128x64, DisplayRotation::Rotate0)
         .into_buffered_graphics_mode();
 
     display1.init().unwrap();
@@ -118,11 +106,7 @@ pub fn init_displays(periph: RemainingPeripherals, hw: &Hardware) -> Displays {
 
     // Второй дисплей (адрес 0x3C)
     let interface2 = I2CDisplayInterface::new_custom_address(SharedI2c, 0x3C);
-    let mut display2 = Ssd1306::new(
-        interface2,
-        DisplaySize128x64,
-        DisplayRotation::Rotate0,
-    )
+    let mut display2 = Ssd1306::new(interface2, DisplaySize128x64, DisplayRotation::Rotate0)
         .into_buffered_graphics_mode();
 
     display2.init().unwrap();

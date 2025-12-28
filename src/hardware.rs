@@ -34,8 +34,8 @@ pub fn init() -> (Hardware, RemainingPeripherals, pac::TIMER) {
         &mut pac.RESETS,
         &mut watchdog,
     )
-        .ok()
-        .unwrap();
+    .ok()
+    .unwrap();
 
     let sio = Sio::new(pac.SIO);
     let gpio_bank0 = sio.gpio_bank0;

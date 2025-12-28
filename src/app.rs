@@ -1,5 +1,5 @@
-use crate::hardware::Hardware;
 use crate::display::Displays;
+use crate::hardware::Hardware;
 
 pub fn run_loop(_hw: Hardware, _displays: &mut Displays) -> ! {
     loop {
