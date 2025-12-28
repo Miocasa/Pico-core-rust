@@ -63,7 +63,7 @@ impl embedded_hal::i2c::I2c for SharedI2c {
 }
 
 pub fn init_displays(periph: RemainingPeripherals, hw: &Hardware) -> Displays {
-    let mut resets: RESETS = periph.resets.into();
+    let mut resets: RESETS = periph.resets;
 
     let pins = Pins::new(
         periph.io_bank0,

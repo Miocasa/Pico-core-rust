@@ -1,7 +1,8 @@
 use rp_pico::hal;
 // hardware
 use rp_pico::hal::{
-    clocks::{init_clocks_and_plls, ClocksManager},
+    clocks::init_clocks_and_plls,
+    clocks::ClocksManager,
     pac,
     watchdog::Watchdog,
     Sio,
