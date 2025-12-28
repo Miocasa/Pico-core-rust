@@ -1,4 +1,5 @@
 use rp_pico::hal;
+// hardware
 use rp_pico::hal::{
     clocks::{init_clocks_and_plls, ClocksManager},
     pac,
@@ -18,7 +19,7 @@ pub struct RemainingPeripherals {
     pub gpio_bank0: hal::sio::SioGpioBank0,
 }
 
-pub fn init() -> (Hardware, RemainingPeripherals) {
+pub fn init() -> (Hardware, RemainingPeripherals, pac::TIMER) {
     let mut pac = pac::Peripherals::take().unwrap();
     let _core = pac::CorePeripherals::take().unwrap();
 
@@ -39,6 +40,8 @@ pub fn init() -> (Hardware, RemainingPeripherals) {
     let sio = Sio::new(pac.SIO);
     let gpio_bank0 = sio.gpio_bank0;
 
+    let timer = pac.TIMER;
+
     let remaining = RemainingPeripherals {
         io_bank0: pac.IO_BANK0,
         pads_bank0: pac.PADS_BANK0,
@@ -47,5 +50,5 @@ pub fn init() -> (Hardware, RemainingPeripherals) {
         gpio_bank0,
     };
 
-    (Hardware { clocks }, remaining)
+    (Hardware { clocks }, remaining, timer)
 }
