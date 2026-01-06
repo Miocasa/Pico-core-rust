@@ -1,6 +1,7 @@
 //! Enable bootsel via double reset.
 // #![no_std]
 
+use core::ptr::{addr_of, addr_of_mut};
 use core::{arch::asm, mem::MaybeUninit};
 use embedded_hal::delay::DelayNs;
 use rp_pico::hal::rom_data::reset_to_usb_boot;
@@ -14,13 +15,13 @@ pub fn probe_double_reset(delay: &mut Timer) {
     unsafe {
         asm!(
         "ldr {flag}, [{addr}]",
-        addr  = in(reg) FLAG.as_ptr(),
+        addr = in(reg) addr_of!(FLAG) as *const u8,
         flag = out(reg) flag,
         );
     }
 
     if flag == 0x0B0075E1 {
-        unsafe { FLAG.write(0) };
+        unsafe { addr_of_mut!(FLAG).write(MaybeUninit::new(0)) };
         delay.delay_ms(500);
         // trigger bootsel
         reset_to_usb_boot(0, 0);
@@ -31,7 +32,7 @@ pub fn probe_double_reset(delay: &mut Timer) {
         unsafe {
             asm!(
             "str {value}, [{addr}]",
-            addr = in(reg) FLAG.as_ptr(),
+            addr = in(reg) addr_of!(FLAG) as *const u8,
             value = in(reg) value,
             );
         }
@@ -41,7 +42,7 @@ pub fn probe_double_reset(delay: &mut Timer) {
         unsafe {
             asm!(
             "str {value}, [{addr}]",
-            addr = in(reg) FLAG.as_ptr(),
+            addr = in(reg) addr_of!(FLAG) as *const u8,
             value = in(reg) value,
             );
         }

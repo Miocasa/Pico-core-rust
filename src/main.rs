@@ -1,4 +1,3 @@
-// main
 #![no_std]
 #![no_main]
 #![cfg_attr(test, no_main)]
@@ -27,7 +26,8 @@ static mut HEAP: [MaybeUninit<u8>; HEAP_SIZE] = [MaybeUninit::uninit(); HEAP_SIZ
 fn main() -> ! {
     // Initialize the allocator before any heap usage
     unsafe {
-        ALLOCATOR.init(HEAP.as_mut_ptr() as usize, HEAP_SIZE);
+        use core::ptr::addr_of_mut;
+        ALLOCATOR.init(addr_of_mut!(HEAP) as *mut u8 as usize, HEAP_SIZE);
     }
 
     // Инициализация аппаратной части
