@@ -39,7 +39,7 @@ pub struct Displays {
     pub display2: DisplayType,
 }
 
-// Обертка для разделяемого доступа к I2C
+// Wrapper for shared I2C access
 pub struct SharedI2c;
 
 impl embedded_hal::i2c::ErrorType for SharedI2c {
@@ -72,7 +72,7 @@ pub fn init_displays(periph: RemainingPeripherals, hw: &Hardware) -> Displays {
         &mut resets,
     );
 
-    // Создаем I2C шину на GPIO2 (SDA) и GPIO3 (SCL)
+    // Create an I2C bus on GPIO2 (SDA) and GPIO3 (SCL)
     let i2c = I2C::i2c1(
         periph.i2c1,
         pins.gpio2.reconfigure(),
@@ -82,12 +82,12 @@ pub fn init_displays(periph: RemainingPeripherals, hw: &Hardware) -> Displays {
         hw.clocks.system_clock.freq(),
     );
 
-    // Помещаем шину в глобальный Mutex
+    // Place the bus into a global Mutex
     cortex_m::interrupt::free(|cs| {
         I2C_BUS.borrow(cs).replace(Some(i2c));
     });
 
-    // Первый дисплей (адрес 0x3D)
+    // First display (address 0x3D)
     let interface1 = I2CDisplayInterface::new_custom_address(SharedI2c, 0x3D);
     let mut display1 = Ssd1306::new(interface1, DisplaySize128x64, DisplayRotation::Rotate0)
         .into_buffered_graphics_mode();
@@ -104,7 +104,7 @@ pub fn init_displays(periph: RemainingPeripherals, hw: &Hardware) -> Displays {
 
     display1.flush().unwrap();
 
-    // Второй дисплей (адрес 0x3C)
+    // Second display (address 0x3C)
     let interface2 = I2CDisplayInterface::new_custom_address(SharedI2c, 0x3C);
     let mut display2 = Ssd1306::new(interface2, DisplaySize128x64, DisplayRotation::Rotate0)
         .into_buffered_graphics_mode();

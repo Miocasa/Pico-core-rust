@@ -30,15 +30,15 @@ fn main() -> ! {
         ALLOCATOR.init(addr_of_mut!(HEAP) as *mut u8 as usize, HEAP_SIZE);
     }
 
-    // Инициализация аппаратной части
+    // Initializing the hardware
     let (hw, mut pac_periph, timer_periph) = hardware::init();
 
     let mut timer = Timer::new(timer_periph, &mut pac_periph.resets, &hw.clocks);
     double_tap_reboot::probe_double_reset(&mut timer);
 
-    // Инициализация дисплеев (передаем оставшиеся периферийные устройства)
+    // Initializing displays (moving remaining peripherals)
     let mut displays = display::init_displays(pac_periph, &hw);
 
-    // Запуск основного цикла приложения
+    // Start the main application loop
     app::run_loop(hw, &mut displays);
 }
