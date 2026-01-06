@@ -9,13 +9,15 @@ cortex-m = "0.7"
 cortex-m-rt = "0.7"
 embedded-hal = "1"
 embedded-graphics = "0.8.1"
+embedded-alloc = "0.6.0"
 ssd1306 = "0.10"
 ssd1306-i2c = "0.1.5"
 defmt = "0.3"
 defmt-rtt = "0.4"
 panic-probe = { version = "0.3", features = ["print-defmt"] }
 
-rp-pico = "0.9"
+rp-pico = "0.9.0"
+alloc-cortex-m = "0.4.4"
 
 
 #shared-bus = { version = "0.3", features = ["cortex-m"] }
@@ -26,6 +28,10 @@ rp-pico = "0.9"
 #rp2040-boot2 = "0.3"  # Required for the #[link_section = ".boot2"] code
 
 # Removed unused crates: ssd1306-i2c, display-interface, display-interface-i2c
+[[bin]]
+name = "pico-test"
+test = false
+bench = false
 
 # cargo build/run
 [profile.dev]
