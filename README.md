@@ -1,4 +1,4 @@
-# 🦀 RP Pico OLED Rust
+# 🦀 RP Pico Rust
 
 > A starter template for Raspberry Pi Pico (RP2040) projects in Rust, designed to simplify development with an Arduino-like structure. This example demonstrates sharing a single I²C bus with multiple devices—specifically, two SSD1306 OLED displays.
 
@@ -8,7 +8,8 @@ This project provides a foundation for embedded Rust development on the Raspberr
 
 ### Required Components
 - Raspberry Pi Pico (RP2040 microcontroller)
-- Two SSD1306 OLED displays (typically 128x64 or 128x32 resolution, I²C interface)
+- Two SSD1306 OLED displays (typically 128x64 or 128x32 resolution, I²C interface) (optional)
+> You can remove oled displays implementation
 
 ### Wiring Example
 Connect both OLED displays to the same I²C bus (different addresses required, e.g., 0x3C and 0x3D):
@@ -57,11 +58,11 @@ repo/
 ├── memory.x                # Linker script for memory layout (flash/RAM placement)
 ├── README.md               # This file
 └── src/
-├── app.rs              # Application logic (Arduino-like setup/loop)
-├── display.rs          # Configuration and drivers for two SSD1306 displays (and i2c pins)
-├── double_tap_reboot.rs # Double-tap reset to bootloader (Pico SDK-inspired)
-├── hardware.rs         # Hardware initialization (I²C, UART, SPI, etc.)
-└── main.rs             # Entry point (no_std, panic handler, etc.)
+    ├── app.rs              # Application logic (Arduino-like setup/loop)
+    ├── display.rs          # Configuration and drivers for two SSD1306 displays (and i2c pins)
+    ├── double_tap_reboot.rs # Double-tap reset to bootloader (Pico SDK-inspired)
+    ├── hardware.rs         # Hardware initialization (I²C, UART, SPI, etc.)
+    └── main.rs             # Entry point (no_std, panic handler, etc.)
 ```
 
 ## Usage
@@ -86,4 +87,5 @@ Extend this template by adding new peripherals in `hardware.rs` or additional lo
 
 ## Contributing
 
-Contributions are welcome. Please open issues or pull requests for improvements.
+Contributions are welcome. Please open issues or pull requests for improvements.  
+> In future releases code will be refactored, for convenience
